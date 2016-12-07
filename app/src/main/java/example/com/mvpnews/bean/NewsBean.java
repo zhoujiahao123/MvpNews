@@ -22,6 +22,13 @@ public class NewsBean {
         this.result = result;
     }
 
+    @Override
+    public String toString() {
+        return "NewsBean{" +
+                "result=" + result +
+                '}';
+    }
+
     public static class ResultBean {
         /**
          * title : 农村小伙山上发现它，被称为药王，拿城里卖上千一斤
@@ -44,6 +51,13 @@ public class NewsBean {
 
         public void setData(List<DataBean> data) {
             this.data = data;
+        }
+
+        @Override
+        public String toString() {
+            return "ResultBean{" +
+                    "data=" + data +
+                    '}';
         }
 
         public static class DataBean {
@@ -82,6 +96,16 @@ public class NewsBean {
 
             public void setUrl(String url) {
                 this.url = url;
+            }
+
+            @Override
+            public String toString() {
+                return "DataBean{" +
+                        "title='" + title + '\'' +
+                        ", date='" + date + '\'' +
+                        ", thumbnail_pic_s='" + thumbnail_pic_s + '\'' +
+                        ", url='" + url + '\'' +
+                        '}';
             }
         }
     }

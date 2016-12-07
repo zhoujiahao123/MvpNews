@@ -10,9 +10,8 @@ import rx.Observable;
  */
 
 public class RequestNews {
-        private static final String type = "top";
         private static final String key = "cd6f63aca9759092dac67543050661f1";
-    public static Observable<NewsBean> getObservable(){
+    public static Observable<NewsBean> getObservable(String type){
         Retrofit retrofit = RetrofitFroAllUtils.getRetrofitInstance();
         Api api = retrofit.create(Api.class);
         Observable<NewsBean> observable = (Observable<NewsBean>) api.getNews(type,key);

@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.facebook.stetho.Stetho;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -23,6 +25,13 @@ public class BaseApplication extends Application{
     private static Date date;
     private static SimpleDateFormat mDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     public void onCreate(){
+        Stetho.initialize(
+                Stetho.newInitializerBuilder(this)
+                        .enableDumpapp(
+                                Stetho.defaultDumperPluginsProvider(this))
+                        .enableWebKitInspector(
+                                Stetho.defaultInspectorModulesProvider(this))
+                        .build());
         context = getApplicationContext();
         openHelper= new DaoMaster.DevOpenHelper(this,"NEWS",null);
         db = openHelper.getWritableDatabase();

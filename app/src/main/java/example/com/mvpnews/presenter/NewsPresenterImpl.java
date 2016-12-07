@@ -1,72 +1,44 @@
 package example.com.mvpnews.presenter;
 
-import android.app.Application;
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.util.Log;
-
-import java.util.List;
-
-import example.com.mvpnews.News;
-import example.com.mvpnews.app.BaseApplication;
 import example.com.mvpnews.bean.NewsBean;
-import example.com.mvpnews.model.api.NewsModel;
-import example.com.mvpnews.model.api.NewsModelImpl;
-import example.com.mvpnews.ui.view.NewsView;
+import example.com.mvpnews.model.api.util.NewsModel;
+import example.com.mvpnews.model.api.util.NewsModelImpl;
+import example.com.mvpnews.ui.view.MainView;
 
 /**
- * Created by ASUS-NB on 2016/12/2.
+ * Created by ASUS-NB on 2016/12/4.
  */
 
-public class NewsPresenterImpl implements NewsPresenter,OnNewsFromSqlListener,OnNewsListener{
-    private NewsView view;
+public class NewsPresenterImpl implements NewPresenter,OnCallbackListener{
+    private MainView mainView;
     private NewsModel newsModel;
-    private NewsBean newsBean;
-    private List<News> list;
-    private ConnectivityManager manager;
-    NetworkInfo networkInfo;
-    public NewsPresenterImpl(NewsView view){
-        this.view = view;
+
+    public NewsPresenterImpl(MainView view){
+        mainView = view;
         newsModel = new NewsModelImpl();
-        manager = (ConnectivityManager) BaseApplication.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        networkInfo = manager.getActiveNetworkInfo();
-        if(networkInfo.isAvailable()){
-            newsModel.getInfo(this);
-            Log.e("news getinfo","newsModthis);");
-        }else {
-            newsModel.loadInfo(this);
-        }
     }
     @Override
-    public void loadNewsFromNet() {
-        view.showNews(newsBean);
-    }
-
-    @Override
-    public void loadNewsFromSql() {
-        view.showsNews(list);
-    }
-
-    @Override
-    public void succeed(List<News> list) {
-        this.list = list;
+    public void loadNewsSql() {
 
     }
 
     @Override
-    public void error(Exception e) {
-
+    public void loadNewsNet() {
+        newsModel.loadNewsNet(this);
     }
 
     @Override
-    public void success(NewsBean newsBean) {
-        this.newsBean = newsBean;
-        loadNewsFromNet();
+    public void setNews(NewsBean topNewsBean,NewsBean shehuiNewsBean,NewsBean guoneiNewsBean) {
+        mainView.showNews(topNewsBean, shehuiNewsBean, guoneiNewsBean);
+    }
+
+    @Override
+    public void succeed(NewsBean topNewsBean,NewsBean shehuiNewsBean,NewsBean guoneiNewsBean) {
+        setNews( topNewsBean, shehuiNewsBean, guoneiNewsBean);
     }
 
     @Override
     public void error(Throwable e) {
-
+        new Exception("在请求新闻时出现了问题");
     }
 }
